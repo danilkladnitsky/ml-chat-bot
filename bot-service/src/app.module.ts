@@ -1,15 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from 'app.controller';
-import { TelegrafModule } from 'nestjs-telegraf';
 import { TelegramModule } from 'modules/telegram/telegram.module';
+import { DatabaseModule } from 'database/database.module';
 
 @Module({
-  imports: [
-    TelegrafModule.forRoot({
-      token: process.env.BOT_TOKEN,
-    }),
-    TelegramModule,
-  ],
+  imports: [DatabaseModule, TelegramModule],
   controllers: [AppController],
 })
 export class AppModule {}
