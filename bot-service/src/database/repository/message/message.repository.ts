@@ -1,5 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { MessageEntity } from 'database/entities/message.entity';
+import { CreateMessageWithParentDto } from 'dto/telegram';
 import { Repository } from 'typeorm';
 
 export class MessageRepository {
@@ -9,10 +10,25 @@ export class MessageRepository {
   ) {}
 
   getAll() {
-    return this.messageRepository.find();
+    return this.messageRepository.find({
+      relations: {
+        parent: true,
+        children: true,
+      },
+    });
   }
 
   getById(id: Id) {
-    return this.messageRepository.findOne({ where: { id } });
+    return this.messageRepository.findOne({
+      where: { id },
+      relations: {
+        parent: true,
+        children: true,
+      },
+    });
+  }
+
+  create(message: CreateMessageWithParentDto) {
+    return this.messageRepository.save(message);
   }
 }
