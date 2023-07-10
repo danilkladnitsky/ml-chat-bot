@@ -1,0 +1,19 @@
+{
+  "name": "ml-chat-bot",
+  "version": "1.0.0",
+  "description": "Проект по разработке модели для оптимизации пользовательского опыта чат-ботов",
+  "main": "index.js",
+  "scripts": {
+    "dev": "docker compose -f docker-compose.yml -f docker-compose.dev.yml --env-file .env up"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danyaisyourhomie/ml-chat-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danyaisyourhomie/ml-chat-bot/issues"
+  },
+  "homepage": "https://github.com/danyaisyourhomie/ml-chat-bot#readme"
+}

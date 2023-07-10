@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+    bot-service:
+        command: npm run start:dev
+        volumes:
+            - ./bot-service:/usr/src/app
+            - /usr/src/app/node_modules

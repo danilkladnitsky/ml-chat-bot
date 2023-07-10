@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+    bot-service:
+        env_file:
+            - .env
+        container_name: bot
+        hostname: bot
+        build:
+          context: bot-service
+        ports:
+            - "${BOT_PORT}:${BOT_PORT}"
+        command: npm run start:prod
+        environment:
+            - ${BOT_TOKEN}
+        restart: always
+        healthcheck:
+            test: ["CMD", "curl", "--fail", "http://localhost:3000/ping"]
+            interval: 5s
+            timeout: 5s
+            retries: 3
