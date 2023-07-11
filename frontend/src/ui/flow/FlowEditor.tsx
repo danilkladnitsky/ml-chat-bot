@@ -19,8 +19,6 @@ const FlowEditor = () => {
     fetchTelegramMessages();
   }, []);
 
-  const hasData = nodes.length && edges.length;
-
   return (
     <div className={styles.wrapper}>
       <ReactFlowProvider>
