@@ -12,7 +12,6 @@ jobs:
     outputs:
       backend: ${{ steps.check_files.outputs.backend }}
       frontend: ${{ steps.check_files.outputs.frontend }}
-      nginx: ${{ steps.check_files.outputs.nginx }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -30,9 +29,6 @@ jobs:
               elif [[ $file == frontend/* ]]; then
                 echo "frontend service will be rebuilt"
                 echo "::set-output name=frontend::true"
-              elif [[ $file == nginx/* ]]; then
-                echo "nginx will be rebuild"
-                echo "::set-output name=nginx::true"
               else
                 echo "file does not belong to any service"
               fi
