@@ -63,7 +63,7 @@ jobs:
       -
         name: Push backend image
         uses: docker/build-push-action@v4
-        # if: needs.init.outputs.backend == 'true'
+        if: needs.init.outputs.backend == 'true'
         with:
           context: bot-service
           push: true
@@ -74,7 +74,7 @@ jobs:
       -
         name: Push frontend image
         uses: docker/build-push-action@v4
-        # if: needs.init.outputs.frontend == 'true'
+        if: needs.init.outputs.frontend == 'true'
         with:
           context: frontend
           push: true
@@ -132,21 +132,3 @@ jobs:
       -
         name: Check service
         run: docker ps -a
-
-  # build-nginx:
-  #   needs: 
-  #     - build-backend
-  #     - build-frontend
-  #   # if: needs.init.outputs.nginx == 'true'
-  #   name: Build and publish nginx
-  #   runs-on: self-hosted
-  #   steps:
-  #     -
-  #       name: Pull service
-  #       run: docker compose pull
-  #     -
-  #       name: Build service
-  #       run: docker compose --env-file .env up nginx -d --force-recreate
-  #     -
-  #       name: Check service
-  #       run: docker ps -a
