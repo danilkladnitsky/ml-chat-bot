@@ -12,11 +12,11 @@ const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className={styles.app}>
+    <div className={styles.app}>
+      <QueryClientProvider client={queryClient}>
         <FlowEditor />
-      </div>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </div>
 
   );
 };
