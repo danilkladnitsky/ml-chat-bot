@@ -65,7 +65,7 @@ export class PredictionService {
 
     this.lastSchema = treeJson;
 
-    console.log(treeJson);
+    return predictedClass;
   }
 
   async getJsonSchema() {

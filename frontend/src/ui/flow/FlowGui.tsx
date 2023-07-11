@@ -26,7 +26,6 @@ const FlowGui = ({ edges, nodes }: Props) => {
   return (
     <ReactFlowProvider>
       <ReactFlow
-        className={styles.wrapper}
         nodes={flowNodes}
         edges={flowEdges}
         onEdgesChange={onEdgesChange}

@@ -31,7 +31,9 @@ export class MlService
   }
 
   async getPredict() {
-    this.io.emit('predict', this.predictionService.train());
+    this.io.emit('event', {
+      result: await this.predictionService.train(),
+    });
     return 'processing...';
   }
 
