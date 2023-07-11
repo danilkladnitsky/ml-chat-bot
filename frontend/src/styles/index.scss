@@ -4,12 +4,10 @@
     --primary-background: $primary-background;
     --secondary-background: $secondary-background;
     --hover-background: $hover-background;
-    --focus-background: $focus-background;
     --primary-text: $primary-text;
-    --secondary-text: $secondary-text;
-    --accent-text: $accent-text;
-    --secondary-button: $secondary-button;
-    --disabled-button: $disabled-button;
+    --secondary-text: $primary-text;
+    --primary-accent: $primary-accent;
+    --secondary-accent: $secondary-accent;
 }
 
 * {
@@ -19,8 +17,9 @@
 body {
     margin: 0px;
     font-size: 14px;
-    background-color: $secondary-background;
+    background-color: $primary-background;
     min-height: 100vh;
-    font-family: "Regular";
     font-weight: normal;
+    font-family: Open Sans;
+    font-weight: 300;
 }
