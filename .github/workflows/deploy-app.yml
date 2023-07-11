@@ -12,6 +12,7 @@ jobs:
     outputs:
       backend: ${{ steps.check_files.outputs.backend }}
       frontend: ${{ steps.check_files.outputs.frontend }}
+      ml: ${{ steps.check_files.outputs.ml }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -24,11 +25,14 @@ jobs:
             while IFS= read -r file; do
               echo $file
               if [[ $file == bot-service/* ]]; then
-                echo "backend service will be rebuilt"
+                echo "bot service will be rebuilt"
                 echo "::set-output name=backend::true"
               elif [[ $file == frontend/* ]]; then
                 echo "frontend service will be rebuilt"
                 echo "::set-output name=frontend::true"
+              elif [[ $file == ml-service/* ]]; then
+                echo "ml service will be rebuilt"
+                echo "::set-output name=ml::true"
               else
                 echo "file does not belong to any service"
               fi
@@ -41,6 +45,7 @@ jobs:
     env:
       backend_rep: ${{ secrets.DOCKERHUB_USERNAME }}/ml-bot.bot-service
       frontend_rep: ${{ secrets.DOCKERHUB_USERNAME }}/ml-bot.frontend
+      ml_rep: ${{ secrets.DOCKERHUB_USERNAME }}/ml-bot.ml-service
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -65,6 +70,17 @@ jobs:
           push: true
           tags: ${{env.backend_rep}}:latest
           cache-from: type=registry,ref=${{env.backend_rep}}:latest
+          cache-to: type=inline
+          platforms: linux/x86_64
+      -
+        name: Push ml service image
+        uses: docker/build-push-action@v4
+        if: needs.init.outputs.ml == 'true'
+        with:
+          context: ml-service
+          push: true
+          tags: ${{env.ml_rep}}:latest
+          cache-from: type=registry,ref=${{env.ml_rep}}:latest
           cache-to: type=inline
           platforms: linux/x86_64
       -
@@ -127,6 +143,22 @@ jobs:
       -
         name: Build service
         run: docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env up bot-service -d --force-recreate
+      -
+        name: Check service
+        run: docker ps -a
+
+  build-ml-service:
+    needs: create-env-config
+    if: needs.init.outputs.ml == 'true'
+    name: Build and publish ml service
+    runs-on: self-hosted
+    steps:
+      -
+        name: Pull service
+        run: docker compose pull
+      -
+        name: Build service
+        run: docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env up ml-service -d --force-recreate
       -
         name: Check service
         run: docker ps -a
