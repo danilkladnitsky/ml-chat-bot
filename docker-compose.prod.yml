@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+    bot-service:
+        image: danyakladnitsky/ml-bot.bot-service:latest
+
+    frontend:
+        image: danyakladnitsky/ml-bot.frontend:latest

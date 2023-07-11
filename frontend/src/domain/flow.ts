@@ -55,7 +55,6 @@ export const createEdgesFromTelegramMessages =
         }));
 
         edges.push(...edgesToChildren);
-
         return edges;
       }, []);
     };
