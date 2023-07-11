@@ -12,6 +12,7 @@ const useTelegramMessages = () => {
   return useMutation(async () => await Api.fetchTelegramMessages(), {
     onSuccess: (data) => {
       setMessages(data);
+
       const edges = createEdgesFromTelegramMessages(data);
       const nodes = createNodesFromTelegramMessages(data);
       setFlowEdges(edges);

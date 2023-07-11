@@ -6,7 +6,7 @@ class Api {
     private host?: string;
 
     constructor() {
-      this.host = ENV_VARS.API_HOST;
+      this.host = ENV_VARS.API_HOST || 'api/';
     }
 
     private getUrl(url: string): string {
