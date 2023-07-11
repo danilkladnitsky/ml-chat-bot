@@ -128,7 +128,7 @@ jobs:
         run: docker compose pull
       -
         name: Build service
-        run: docker compose --env-file .env up backend-service -d --force-recreate
+        run: docker compose --env-file .env up bot-service -d --force-recreate
       -
         name: Check service
         run: docker ps -a
