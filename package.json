@@ -4,7 +4,8 @@
   "description": "Проект по разработке модели для оптимизации пользовательского опыта чат-ботов",
   "main": "index.js",
   "scripts": {
-    "dev": "docker compose -f docker-compose.yml -f docker-compose.dev.yml --env-file .env up"
+    "dev": "docker compose -f docker-compose.yml -f docker-compose.dev.yml --env-file .env up",
+    "prod": "docker compose --env-file .env up"
   },
   "repository": {
     "type": "git",

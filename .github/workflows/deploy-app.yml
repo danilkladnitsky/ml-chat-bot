@@ -1,0 +1,152 @@
+name: Deploy app to production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  init:
+    runs-on: self-hosted
+    name: Check changed files
+    outputs:
+      backend: ${{ steps.check_files.outputs.backend }}
+      frontend: ${{ steps.check_files.outputs.frontend }}
+      nginx: ${{ steps.check_files.outputs.nginx }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: check modified files
+        id: check_files
+        run: |
+            git diff --name-only HEAD^ HEAD > files.txt
+            while IFS= read -r file; do
+              echo $file
+              if [[ $file == bot-service/* ]]; then
+                echo "backend service will be rebuilt"
+                echo "::set-output name=backend::true"
+              elif [[ $file == frontend/* ]]; then
+                echo "frontend service will be rebuilt"
+                echo "::set-output name=frontend::true"
+              elif [[ $file == nginx/* ]]; then
+                echo "nginx will be rebuild"
+                echo "::set-output name=nginx::true"
+              else
+                echo "file does not belong to any service"
+              fi
+            done < files.txt
+
+  push-to-registry:
+    name: Build and publish images to Docker Registry
+    runs-on: self-hosted
+    needs: init
+    env:
+      backend_rep: ${{ secrets.DOCKERHUB_USERNAME }}/ml-bot.bot-service
+      frontend_rep: ${{ secrets.DOCKERHUB_USERNAME }}/ml-bot.frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Push backend image
+        uses: docker/build-push-action@v4
+        if: needs.init.outputs.backend == 'true'
+        with:
+          context: bot-service
+          push: true
+          tags: ${{env.backend_rep}}:latest
+          cache-from: type=registry,ref=${{env.backend_rep}}:latest
+          cache-to: type=inline
+          platforms: linux/x86_64
+      -
+        name: Push frontend image
+        uses: docker/build-push-action@v4
+        if: needs.init.outputs.frontend == 'true'
+        with:
+          context: frontend
+          push: true
+          tags: ${{env.frontend_rep}}:latest
+          cache-from: type=registry,ref=${{env.frontend_rep}}:latest
+          cache-to: type=inline
+          platforms: linux/x86_64
+  
+  create-env-config:
+    name: Copy secrets to env
+    runs-on: self-hosted
+    needs: push-to-registry
+    steps:
+      -
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          envkey_BOT_PORT: ${{ secrets.BOT_PORT }}
+          envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          envkey_POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          envkey_POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+          envkey_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          envkey_API_HOST: ${{ secrets.API_HOST }}
+          file_name: .env
+          fail_on_empty: false
+
+  build-frontend:
+    needs: create-env-config
+    if: needs.init.outputs.frontend == 'true'
+    name: Build and publish frontend
+    runs-on: self-hosted
+    steps:
+      -
+        name: Pull service
+        run: docker compose pull
+      -
+        name: Build service
+        run: docker compose --env-file .env up frontend -d --force-recreate
+      -
+        name: Check service
+        run: docker ps -a
+
+  build-backend:
+    needs: create-env-config
+    if: needs.init.outputs.backend == 'true'
+    name: Build and publish backend
+    runs-on: self-hosted
+    steps:
+      -
+        name: Pull service
+        run: docker compose pull
+      -
+        name: Build service
+        run: docker compose --env-file .env up backend -d --force-recreate
+      -
+        name: Check service
+        run: docker ps -a
+
+  build-nginx:
+    needs: 
+      - build-backend
+      - build-frontend
+    if: needs.init.outputs.nginx == 'true'
+    name: Build and publish nginx
+    runs-on: self-hosted
+    steps:
+      -
+        name: Pull service
+        run: docker compose pull
+      -
+        name: Build service
+        run: docker compose --env-file .env up nginx -d --force-recreate
+      -
+        name: Check service
+        run: docker ps -a
