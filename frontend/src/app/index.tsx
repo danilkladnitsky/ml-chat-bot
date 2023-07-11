@@ -4,7 +4,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 
-import FlowEditor from '../ui/flow';
+import FlowEditor from '../ui/flow/FlowEditor';
 
 import styles from './styles.module.scss';
 
