@@ -2,6 +2,8 @@ import { TelegramMessage } from '../domain/telegram';
 
 import { API_ROUTES } from './routes';
 
+console.log(ENV_VARS);
+
 class Api {
     private host?: string;
 
