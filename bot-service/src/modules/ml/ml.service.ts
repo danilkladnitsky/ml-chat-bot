@@ -12,4 +12,9 @@ export class MlService {
     const pattern = { cmd: 'ping' };
     return this.client.send(pattern, {});
   }
+
+  async predict() {
+    const pattern = { cmd: 'predict' };
+    return this.client.send(pattern, {});
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Post } from '@nestjs/common';
 import { MlService } from './ml.service';
 
 @Controller('ml')
@@ -8,5 +8,10 @@ export class MlController {
   @Get('ping')
   async ping() {
     return this.mlService.ping();
+  }
+
+  @Post('predict')
+  async predictData() {
+    return this.mlService.predict();
   }
 }

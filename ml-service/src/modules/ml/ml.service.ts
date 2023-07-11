@@ -1,3 +1,4 @@
+import { Inject } from '@nestjs/common';
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -6,6 +7,7 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { PredictionService } from 'src/prediction/prediction.service';
 
 @WebSocketGateway(+process.env.ML_PORT)
 export class MlService
@@ -14,9 +16,19 @@ export class MlService
   @WebSocketServer()
   io: Server;
 
+  constructor(
+    @Inject(PredictionService)
+    private readonly predictionService: PredictionService,
+  ) {}
+
   async pingClients() {
     this.io.emit('ping', 'pong');
     return 'pong';
+  }
+
+  async getPredict() {
+    this.io.emit('predict', this.predictionService.train());
+    return 'processing...';
   }
 
   afterInit(server: any) {
