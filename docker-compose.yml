@@ -29,6 +29,7 @@ services:
         build:
             context: frontend
             target: production
+            - 81:80
         command: npm run build
         environment:
             - ${API_HOST}
