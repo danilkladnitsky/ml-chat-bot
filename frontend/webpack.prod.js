@@ -93,7 +93,7 @@ module.exports = {
     }),
     new CopyPlugin({
       patterns: [
-        { from: '../public', to: '' }, //to the dist root directory
+        { from: '../public', to: '', noErrorOnMissing: true }, //to the dist root directory
       ],
     }),
   ],
