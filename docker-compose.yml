@@ -28,8 +28,10 @@ services:
         container_name: frontend
         build:
             context: frontend
-                - 81:80
+            target: production
         command: npm run build
+        ports:
+            - 81:80
         environment:
             - ${API_HOST}
         restart: always
