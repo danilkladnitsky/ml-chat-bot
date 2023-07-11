@@ -28,7 +28,6 @@ services:
         container_name: frontend
         build:
             context: frontend
-            target: production
             - 81:80
         command: npm run build
         environment:
