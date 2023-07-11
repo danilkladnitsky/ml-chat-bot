@@ -1,12 +1,13 @@
 import { TelegramMessage } from './telegram';
 
 export type FlowEdge = {
-    id: string;
-    source: Id;
-    target: Id;
-    data: {
-        originalMessage: TelegramMessage;
-    };
+  id: string;
+  source: Id;
+  target: Id;
+  label: string;
+  data: {
+      originalMessage: TelegramMessage;
+  };
 }
 
 export type FlowNode = {
@@ -23,7 +24,7 @@ export type FlowNode = {
 
 export const createNodesFromTelegramMessages =
   (messages: TelegramMessage[]): FlowNode[] => {
-    return messages.map((message, index) => ({
+    return messages.map((message) => ({
       data: {
         originalMessage: message,
         label: message.text,
@@ -31,7 +32,7 @@ export const createNodesFromTelegramMessages =
       id: message.id.toString(),
       position: {
         x: 0,
-        y: index * 100,
+        y: 0,
       },
     }));
   };
@@ -50,6 +51,7 @@ export const createEdgesFromTelegramMessages =
           source: message.id.toString(),
           target: child.id.toString(),
           id: `${message.id}-${child.id}`,
+          label: child.keyboard_link || child.text,
         }));
 
         edges.push(...edgesToChildren);

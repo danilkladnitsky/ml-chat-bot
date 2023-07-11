@@ -17,18 +17,18 @@ type Props = {
   edges: FlowEdge[];
 }
 
-const FlowGui = ({ edges,nodes }: Props) => {
-  const [flowNodes,, onNodesChange] = useNodesState(nodes);
-  const [flowEdges,, onEdgesChange] = useEdgesState(edges);
+const FlowGui = ({ edges, nodes }: Props) => {
+  const layoutElements = createLayout(nodes, edges);
 
-  const layoutElements = createLayout(flowNodes, flowEdges);
+  const [flowNodes,, onNodesChange] = useNodesState(layoutElements.nodes);
+  const [flowEdges,, onEdgesChange] = useEdgesState(layoutElements.edges);
 
   return (
     <ReactFlowProvider>
       <ReactFlow
         className={styles.wrapper}
-        nodes={layoutElements.nodes}
-        edges={layoutElements.edges}
+        nodes={flowNodes}
+        edges={flowEdges}
         onEdgesChange={onEdgesChange}
         onNodesChange={onNodesChange}
         snapToGrid
