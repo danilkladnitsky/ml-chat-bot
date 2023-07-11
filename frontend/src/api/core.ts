@@ -13,14 +13,6 @@ class Api {
       return `${this.host}${url}`;
     }
 
-    private parseResponse<T,>(res: Response): Promise<T | null> {
-      try {
-        return res.json().then((data) => data);
-      } catch (error) {
-        return Promise.resolve(null);
-      }
-    }
-
     async fetchTelegramMessages() {
       const res = await fetch(this.getUrl(API_ROUTES.TELEGRAM.GET_MESSAGES()));
       return this.parseResponse<TelegramMessage[]>(res);
@@ -29,6 +21,14 @@ class Api {
     async fetchPredict() {
       const res = await fetch(this.getUrl(API_ROUTES.ML.RUN_PREDICT()), { method: 'POST' });
       return this.parseResponse<string>(res);
+    }
+
+    private parseResponse<T,>(res: Response): Promise<T | null> {
+      try {
+        return res.json().then((data) => data);
+      } catch (error) {
+        return Promise.resolve(null);
+      }
     }
 }
 
