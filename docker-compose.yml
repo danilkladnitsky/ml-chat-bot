@@ -35,7 +35,6 @@ services:
         command: npm run start:prod
         environment:
             - ${ML_PORT}
-            - ${ML_SOCKET_PORT}
         restart: always
         healthcheck:
             test: ["CMD", "curl", "--fail", "http://localhost:${ML_PORT}/ping"]
