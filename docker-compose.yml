@@ -28,7 +28,7 @@ services:
         container_name: frontend
         build:
             context: frontend
-            - 81:80
+                - 81:80
         command: npm run build
         environment:
             - ${API_HOST}
