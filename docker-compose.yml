@@ -2,8 +2,7 @@ version: "3.8"
 
 services:
     bot-service:
-        env_file:
-            - .env
+        env_file: .env
         container_name: bot
         hostname: bot
         build:
@@ -23,3 +22,16 @@ services:
             interval: 5s
             timeout: 5s
             retries: 3
+
+    frontend:
+        env_file: .env
+        container_name: frontend
+        build:
+            context: frontend
+            target: production
+        ports:
+            - 80:80
+        command: npm run build
+        environment:
+            - ${API_HOST}
+        restart: always

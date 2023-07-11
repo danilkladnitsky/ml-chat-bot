@@ -63,7 +63,7 @@ export class TelegramService {
 
     const buttons = childrenMessages.map((msg) => ({
       callback_data: makeCallbackQuery(msg.id),
-      text: msg.text,
+      text: msg.keyboard_link || msg.text,
     }));
 
     return Keyboard.make(buttons).inline();
