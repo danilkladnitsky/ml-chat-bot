@@ -40,7 +40,7 @@ jobs:
 
   push-to-registry:
     name: Build and publish images to Docker Registry
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: init
     env:
       backend_rep: ${{ secrets.DOCKERHUB_USERNAME }}/ml-bot.bot-service
