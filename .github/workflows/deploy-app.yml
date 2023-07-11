@@ -103,7 +103,7 @@ jobs:
 
   build-frontend:
     needs: create-env-config
-    # if: needs.init.outputs.frontend == 'true'
+    if: needs.init.outputs.frontend == 'true'
     name: Build and publish frontend
     runs-on: self-hosted
     steps:
@@ -119,7 +119,7 @@ jobs:
 
   build-backend:
     needs: create-env-config
-    # if: needs.init.outputs.backend == 'true'
+    if: needs.init.outputs.backend == 'true'
     name: Build and publish backend
     runs-on: self-hosted
     steps:
