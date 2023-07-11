@@ -18,7 +18,26 @@ services:
             - ${POSTGRES_DATABASE}
         restart: always
         healthcheck:
-            test: ["CMD", "curl", "--fail", "http://localhost:3000/ping"]
+            test: ["CMD", "curl", "--fail", "http://localhost:${BOT_PORT}/ping"]
+            interval: 5s
+            timeout: 5s
+            retries: 3
+        pull_policy: always
+
+    ml-service:
+        env_file: .env
+        container_name: ml
+        hostname: ml
+        build:
+          context: ml-service
+        ports:
+            - "${ML_PORT}:${ML_PORT}"
+        command: npm run start:prod
+        environment:
+            - ${ML_PORT}
+        restart: always
+        healthcheck:
+            test: ["CMD", "curl", "--fail", "http://localhost:${ML_PORT}/ping"]
             interval: 5s
             timeout: 5s
             retries: 3

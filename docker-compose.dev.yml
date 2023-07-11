@@ -7,6 +7,12 @@ services:
             - ./bot-service:/usr/src/app
             - /usr/src/app/node_modules
 
+    ml-service:
+        command: npm run start:dev
+        volumes:
+            - ./ml-service:/usr/src/app
+            - /usr/src/app/node_modules
+
     frontend:
         build:
             target: base

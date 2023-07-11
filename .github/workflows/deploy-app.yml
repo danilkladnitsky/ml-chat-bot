@@ -94,6 +94,7 @@ jobs:
           envkey_POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
           envkey_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           envkey_API_HOST: ${{ secrets.API_HOST }}
+          envkey_ML_PORT: ${{ secrets.ML_PORT }}
           file_name: .env
           fail_on_empty: false
 
