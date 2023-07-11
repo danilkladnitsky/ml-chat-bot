@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactFlow, { Background, Controls, ReactFlowProvider } from 'react-flow-renderer';
+
+import useTelegramMessages from '../../api/hooks/telegram/use-telegram-messages';
 
 import 'reactflow/dist/style.css';
 import styles from './styles.module.scss';
@@ -11,6 +13,12 @@ const initialNodes = [
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 const FlowEditor = () => {
+  const { mutate: fetchTelegramMessages } = useTelegramMessages();
+
+  useEffect(() => {
+    fetchTelegramMessages();
+  }, []);
+
   return (
     <ReactFlowProvider>
       <ReactFlow
