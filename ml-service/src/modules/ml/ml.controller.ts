@@ -11,6 +11,11 @@ export class MlController {
     return this.mlService.pingClients();
   }
 
+  @MessagePattern({ cmd: 'schema' })
+  async getSchema() {
+    return this.mlService.getJsonSchema();
+  }
+
   @MessagePattern({ cmd: 'predict' })
   async predict() {
     return this.mlService.getPredict();

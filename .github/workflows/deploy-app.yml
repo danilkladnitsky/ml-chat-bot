@@ -111,6 +111,7 @@ jobs:
           envkey_POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           envkey_API_HOST: ${{ secrets.API_HOST }}
           envkey_ML_PORT: ${{ secrets.ML_PORT }}
+          envkey_SOCKET_HOST: ${{ secrets.SOCKET_HOST }}
           file_name: .env
           fail_on_empty: false
 

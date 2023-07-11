@@ -10,6 +10,9 @@ export class MessageEntity extends BaseEntity {
   @Column({ nullable: true })
   keyboard_link: string;
 
+  @Column({ nullable: true, default: 0 })
+  attachments: number;
+
   // tree  implementation
   @OneToMany(() => MessageEntity, (message) => message.parent)
   children: MessageEntity[];

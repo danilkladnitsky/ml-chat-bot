@@ -6,11 +6,15 @@ import { MessageRepository } from 'database/repository/message/message.repositor
 import { CreateMessageDto, CreateMessageWithParentDto } from 'dto/telegram';
 import { makeCallbackQuery } from 'utils/makeCallbackQuery';
 import { parseCallbackQuery } from 'utils/parseCallbackQuery';
+import { ActivityRepository } from 'database/repository/activity/activity.repository';
+import { CreateActivityDto } from 'dto/activity';
 
 export class TelegramService {
   constructor(
     @Inject(MessageRepository)
     private readonly messageRepository: MessageRepository,
+    @Inject(ActivityRepository)
+    private readonly activityRepository: ActivityRepository,
   ) {}
 
   getRootMessage() {
@@ -35,6 +39,22 @@ export class TelegramService {
     return this.messageRepository.create(dtoWithParent);
   }
 
+  private extractFeatures(message: MessageEntity): CreateActivityDto {
+    const { children, attachments, id, text } = message;
+
+    const buttonsNumber = children.length;
+
+    const createActivityRecordDto = {
+      buttonsNumber,
+      hasAttachments: attachments > 0,
+      deepLevel: 1,
+      message_id: id,
+      messageLength: text.length,
+    };
+
+    return createActivityRecordDto;
+  }
+
   async handleCallbackQuery(query: string) {
     const targetMessageId = parseCallbackQuery<Id | null>(query);
 
@@ -47,6 +67,10 @@ export class TelegramService {
     if (!message) {
       return;
     }
+
+    const activityRecord = this.extractFeatures(message);
+
+    await this.activityRepository.create(activityRecord);
 
     return {
       text: message.text,

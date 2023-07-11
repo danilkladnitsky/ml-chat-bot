@@ -4,4 +4,7 @@ export const API_ROUTES = {
     MESSAGE_BY_ID: (id: Id) => `telegram/message/${id}`,
     CREATE_MESSAGE: () => 'telegram/messages',
   },
+  ML: {
+    RUN_PREDICT: () => 'ml/predict',
+  },
 };

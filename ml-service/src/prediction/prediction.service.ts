@@ -1,6 +1,8 @@
 const DecisionTree = require('decision-tree');
 
 export class PredictionService {
+  private lastSchema: any;
+
   async train() {
     const trainingData = [
       {
@@ -61,6 +63,12 @@ export class PredictionService {
 
     const treeJson = dt.toJSON();
 
+    this.lastSchema = treeJson;
+
     console.log(treeJson);
+  }
+
+  async getJsonSchema() {
+    return this.lastSchema;
   }
 }

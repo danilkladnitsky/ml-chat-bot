@@ -9,7 +9,7 @@ import {
 import { Server } from 'socket.io';
 import { PredictionService } from 'src/prediction/prediction.service';
 
-@WebSocketGateway(+process.env.ML_PORT)
+@WebSocketGateway(+process.env.ML_PORT, { cors: true })
 export class MlService
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
@@ -24,6 +24,10 @@ export class MlService
   async pingClients() {
     this.io.emit('ping', 'pong');
     return 'pong';
+  }
+
+  getJsonSchema() {
+    return this.predictionService.getJsonSchema();
   }
 
   async getPredict() {

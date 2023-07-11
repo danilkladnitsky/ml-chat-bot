@@ -53,5 +53,6 @@ services:
             - 81:80
         environment:
             - ${API_HOST}
+            - ${SOCKET_HOST}
         restart: always
         pull_policy: always
