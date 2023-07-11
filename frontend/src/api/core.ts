@@ -19,7 +19,6 @@ class Api {
 
     async fetchTelegramMessages() {
       const res = await fetch(this.getUrl(API_ROUTES.TELEGRAM.GET_MESSAGES()));
-
       return this.parseResponse<TelegramMessage[]>(res);
     }
 }
