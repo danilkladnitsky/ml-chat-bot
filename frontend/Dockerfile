@@ -4,6 +4,12 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 
+ARG API_HOST
+ARG SOCKET_HOST
+
+ENV API_HOST=${API_HOST}
+ENV SOCKET_HOST=${SOCKET_HOST}
+
 FROM base as build
 RUN npm run build
 
