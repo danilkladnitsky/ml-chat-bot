@@ -5,7 +5,8 @@ import styles from './styles.module.scss';
 
 const Header = () => {
 
-  const handleAnalysisSubmit = () => {
+  const handleRedirect = () => {
+    window.location.replace('https://github.com/danyaisyourhomie/ml-chat-bot');
   };
 
   return (
@@ -15,10 +16,10 @@ const Header = () => {
         ta="center"
         fz="xl"
         fw={600}
-      >ML Bot App
+      >ML Bot App | version sha: {ENV_VARS.VERSION || '0.0.1'}
       </Text>
-      <Button onClick={handleAnalysisSubmit}>
-        Анализировать
+      <Button onClick={handleRedirect}>
+        Source code
       </Button>
     </div>
   );

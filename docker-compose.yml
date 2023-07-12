@@ -54,5 +54,6 @@ services:
         environment:
             - ${API_HOST}
             - ${SOCKET_HOST}
+            - ${VERSION}
         restart: always
         pull_policy: always

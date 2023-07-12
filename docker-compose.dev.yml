@@ -18,7 +18,6 @@ services:
             target: base
         ports:
             - 4000:4000
-            - 80:80
         command: npm run start
         restart: always
         volumes:
