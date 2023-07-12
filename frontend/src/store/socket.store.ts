@@ -16,6 +16,13 @@ export const useSocketStore = create<State & Actions>((set) => ({
   setIsConnected: (isConnected) => {
     set({ isConnected });
   },
+  onConnect: () => {
+    console.log('socket connected');
+
+  },
+  onDisconnect: () => {
+    console.log('socket disconnected');
+  },
   onEvent: (data) => {
     console.log(data);
 
