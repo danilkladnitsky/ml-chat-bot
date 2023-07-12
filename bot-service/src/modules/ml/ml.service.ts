@@ -1,9 +1,12 @@
 import { Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { PredictClassDto } from 'dto/ml';
+import { MessageRepository } from 'database/repository/message/message.repository';
 
 export class MlService {
-  constructor(@Inject('ML_SERVICE') private client: ClientProxy) {}
+  constructor(
+    @Inject('ML_SERVICE') private client: ClientProxy,
+    @Inject(MessageRepository) private messageRepository: MessageRepository,
+  ) {}
 
   async onApplicationBootstrap() {
     await this.client.connect();
@@ -14,11 +17,18 @@ export class MlService {
     return this.client.send(pattern, {});
   }
 
-  async predict(dto: PredictClassDto) {
+  async predict(id: Id, features: string[]) {
+    const message = await this.messageRepository.getById(id);
+
+    if (!message) {
+      return;
+    }
+
     const pattern = { cmd: 'predict' };
+
     return this.client.send(pattern, {
-      features: dto.features,
-      predictClass: dto.predictClass,
+      features: features,
+      predictClass: message,
     });
   }
 }

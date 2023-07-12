@@ -37,6 +37,7 @@ export class MlService
   ): Promise<PredictResponseDto> {
     this.io.emit('event', {
       result: await this.predictionService.train(features, predictSubject),
+      id: predictSubject.id,
     });
     return { status: 'proccessing' };
   }

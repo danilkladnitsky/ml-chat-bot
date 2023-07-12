@@ -18,8 +18,16 @@ class Api {
       return this.parseResponse<TelegramMessage[]>(res);
     }
 
-    async fetchPredict() {
-      const res = await fetch(this.getUrl(API_ROUTES.ML.RUN_PREDICT()), { method: 'POST' });
+    async fetchPredict(id: Id, features: string[]) {
+      const res = await fetch(
+        this.getUrl(API_ROUTES.ML.RUN_MESSAGE_PREDICT(id)),
+        {
+          method: 'POST', body: JSON.stringify({ features }),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          } },
+      );
       return this.parseResponse<string>(res);
     }
 

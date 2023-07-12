@@ -1,14 +1,11 @@
 import React from 'react';
-import { Button, Text, TextInput } from '@mantine/core';
-import usePredict from 'api/hooks/telegram/use-predict';
+import { Button, Text } from '@mantine/core';
 
 import styles from './styles.module.scss';
 
 const Header = () => {
-  const { mutate: requestPredictData } = usePredict();
 
   const handleAnalysisSubmit = () => {
-    requestPredictData();
   };
 
   return (

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Card, CloseButton, Group, Stack, Text } from '@mantine/core';
+import usePredict from 'api/hooks/ml/use-predict';
 import { useTelegramStore } from 'store/telegram.store';
 import { formatDate } from 'utils/formatDate';
 
@@ -7,6 +8,11 @@ import styles from './styles.module.scss';
 
 const Sidebar = () => {
   const { selectedMessage, setSelectedMessage, messages } = useTelegramStore();
+
+  const { mutate: predictMessage, isLoading } = usePredict({
+    messageId: selectedMessage?.id,
+    features: ['textLength', 'hasAttachments', 'buttonsNumber'],
+  });
 
   if (!selectedMessage) {
     return;
@@ -19,6 +25,10 @@ const Sidebar = () => {
     }
 
     setSelectedMessage(message);
+  };
+
+  const handlePredictionSubmit = () => {
+    predictMessage(selectedMessage.id);
   };
 
   const closeSidebar = () => {
@@ -64,8 +74,8 @@ const Sidebar = () => {
 
       </Card>
       <div className={styles.analysisBtn}>
-        <Button variant={'outline'} color="orange">
-        Оценить
+        <Button variant={'outline'} color="orange" onClick={handlePredictionSubmit} loading={isLoading}>
+        Предсказать
         </Button>
       </div>
     </Stack>

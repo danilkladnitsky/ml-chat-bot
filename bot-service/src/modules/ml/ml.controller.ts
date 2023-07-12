@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
-import { PredictClassDto } from 'dto/ml';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { MlService } from './ml.service';
 
 @Controller('ml')
@@ -11,8 +10,8 @@ export class MlController {
     return this.mlService.ping();
   }
 
-  @Post('predict')
-  async predictData(@Body() predictDto: PredictClassDto) {
-    return this.mlService.predict(predictDto);
+  @Post('predict/:id')
+  async predictData(@Param('id') id: Id, @Body('features') features: string[]) {
+    return this.mlService.predict(id, features);
   }
 }
