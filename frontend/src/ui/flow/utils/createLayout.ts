@@ -5,8 +5,8 @@ import { FlowEdge, FlowNode } from '../../../domain/flow';
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-const nodeWidth = 210;
-const nodeHeight = 70;
+const nodeWidth = 500;
+const nodeHeight = 140;
 
 export const createLayout = (nodes: FlowNode[], edges: FlowEdge[], direction = 'TB') => {
   const isHorizontal = direction === 'LR';
