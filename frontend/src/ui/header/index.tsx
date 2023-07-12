@@ -4,7 +4,6 @@ import { Button, Text } from '@mantine/core';
 import styles from './styles.module.scss';
 
 const Header = () => {
-
   const handleRedirect = () => {
     window.location.replace('https://github.com/danyaisyourhomie/ml-chat-bot');
   };
