@@ -8,7 +8,7 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 500;
 const nodeHeight = 140;
 
-export const createLayout = (nodes: FlowNode[], edges: FlowEdge[], direction = 'TB') => {
+export const createLayout = (nodes: FlowNode[], edges: FlowEdge[], direction = 'LR') => {
   const isHorizontal = direction === 'LR';
   dagreGraph.setGraph({ rankdir: direction });
 
