@@ -27,6 +27,8 @@ class Api {
       try {
         return res.json().then((data) => data);
       } catch (error) {
+        console.log(error);
+
         return Promise.resolve(null);
       }
     }

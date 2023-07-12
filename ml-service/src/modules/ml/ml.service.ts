@@ -7,6 +7,7 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { PredictResponseDto } from 'src/dto/ml';
 import { PredictionService } from 'src/prediction/prediction.service';
 
 @WebSocketGateway(+process.env.ML_PORT, { cors: true })
@@ -30,11 +31,11 @@ export class MlService
     return this.predictionService.getJsonSchema();
   }
 
-  async getPredict() {
+  async getPredict(): Promise<PredictResponseDto> {
     this.io.emit('event', {
       result: await this.predictionService.train(),
     });
-    return 'processing...';
+    return { status: 'proccessing' };
   }
 
   afterInit(server: any) {
