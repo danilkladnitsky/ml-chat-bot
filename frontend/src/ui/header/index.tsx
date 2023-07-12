@@ -16,7 +16,7 @@ const Header = () => {
         ta="center"
         fz="xl"
         fw={600}
-      >ML Bot App | version sha: {ENV_VARS.VERSION || '0.0.1'}
+      >ML Bot App | version sha: {ENV_VARS.APP_VERSION || '0.0.1'}
       </Text>
       <Button onClick={handleRedirect}>
         Source code
