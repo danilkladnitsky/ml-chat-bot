@@ -26,9 +26,17 @@ export class MlService {
 
     const pattern = { cmd: 'predict' };
 
+    const predictClass = {
+      hasAttachments: message.attachments > 0,
+      textLength: message.text.length,
+      deepLevel: 1,
+      buttonsNumber: message.children.length > 0,
+      id: message.id,
+    };
+
     return this.client.send(pattern, {
-      features: features,
-      predictClass: message,
+      features,
+      predictClass,
     });
   }
 }

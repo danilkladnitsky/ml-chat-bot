@@ -13,7 +13,7 @@ const Sidebar = () => {
 
   const { mutate: predictMessage, isLoading } = usePredict({
     messageId: selectedMessage?.id,
-    features: ['textLength', 'hasAttachments', 'buttonsNumber'],
+    features: ['textLength', 'hasAttachments', 'buttonsNumber', 'deepLevel'],
   });
 
   if (!selectedMessage) {
@@ -41,9 +41,9 @@ const Sidebar = () => {
   const { text, created_at, children, id: currentMessageId } = selectedMessage;
 
   const predict = predictionResult
-    .find(p => p.id === currentMessageId)?.result;
+    .find(p => p.id === currentMessageId);
 
-  const predictScore = predictionResult ? '👌' : '👎';
+  const predictScore = predict?.result ? '👌' : '👎';
 
   return (
     <Stack className={styles.sidebar}>

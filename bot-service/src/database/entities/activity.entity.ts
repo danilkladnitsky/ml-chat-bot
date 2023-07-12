@@ -17,4 +17,7 @@ export class ActivityEntity extends BaseEntity {
 
   @Column()
   buttonsNumber: number;
+
+  @Column({ default: false })
+  reachedGoal: boolean;
 }

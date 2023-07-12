@@ -47,9 +47,10 @@ export class TelegramService {
     const createActivityRecordDto = {
       buttonsNumber,
       hasAttachments: attachments > 0,
-      deepLevel: 1,
+      deepLevel: 1, // TODO: add bfs
       message_id: id,
       messageLength: text.length,
+      reachedGoal: Math.random() > 0.5,
     };
 
     return createActivityRecordDto;

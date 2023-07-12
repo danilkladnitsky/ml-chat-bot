@@ -73,39 +73,40 @@ export class PredictionService {
   }
 
   async train(features: string[], classForPrediction: TrainDataDto) {
+    const targetClassName = 'reachedGoal';
+
     await this.connectToDataWarehouse(this.warehouseUrl);
     const data = await this.getData();
 
+    if (data.length === 0) {
+      return {
+        result: undefined,
+      };
+    }
+
     const [trainingData, testData] = await this.divideData(data);
 
-    const processedTrainingData = await this.processData(
-      trainingData,
-      features,
-    );
-
-    const targetClassName = 'reachedGoal';
+    const processedTrainingData = await this.processData(trainingData, [
+      ...features,
+      targetClassName,
+    ]);
 
     return new Promise((resolve) => {
       const dt = new DecisionTree(targetClassName, features);
 
       dt.train(processedTrainingData);
+
       this.trainedModel = dt;
-      resolve(true);
+      const predictedClass = dt.predict(classForPrediction);
+
+      const accuracy = dt.evaluate(testData);
+
+      const treeJson = dt.toJSON();
+
+      this.lastSchema = treeJson;
+
+      resolve(Boolean(predictedClass));
     });
-
-    // const predictedClass = dt.predict({
-    //   deepLevel: 2,
-    //   textLength: 200,
-    //   hasAttachments: true,
-    // });
-
-    // const accuracy = dt.evaluate(testData);
-
-    // const treeJson = dt.toJSON();
-
-    // this.lastSchema = treeJson;
-
-    // return predictedClass;
   }
 
   async getJsonSchema() {

@@ -7,7 +7,6 @@ type Query = {
   features: string[];
 }
 const usePredict = ({ features, messageId }: Query) => {
-
   return useMutation(async () => {
 
     if (!messageId) return;
