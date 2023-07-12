@@ -6,4 +6,4 @@ services:
     frontend:
         image: danyakladnitsky/ml-bot.frontend:latest
     ml-service:
-        image: danyakladnitsky/ml-service.frontend:latest
+        image: danyakladnitsky/ml-bot.ml-service:latest

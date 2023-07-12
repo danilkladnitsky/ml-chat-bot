@@ -4,8 +4,8 @@ import { MlController } from './ml.controller';
 import { MlService } from './ml.service';
 
 @Module({
+  imports: [PredictionModule],
   controllers: [MlController],
   providers: [MlService],
-  imports: [PredictionModule],
 })
 export class MlModule {}
