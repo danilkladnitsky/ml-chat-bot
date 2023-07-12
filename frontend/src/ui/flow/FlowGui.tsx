@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactFlow, { Background, Controls, ReactFlowProvider } from 'react-flow-renderer';
 import {
   useEdgesState,
@@ -18,10 +18,21 @@ type Props = {
 }
 
 const FlowGui = ({ edges, nodes, onNodeClick }: Props) => {
-  const layoutElements = createLayout(nodes, edges);
+  const [
+    flowNodes, setNodes, onNodesChange,
+  ] = useNodesState([]);
 
-  const [flowNodes,, onNodesChange] = useNodesState(layoutElements.nodes);
-  const [flowEdges,, onEdgesChange] = useEdgesState(layoutElements.edges);
+  const [
+    flowEdges, setEdges, onEdgesChange,
+  ] = useEdgesState([]);
+
+  useEffect(() => {
+    const layoutElements = createLayout(nodes, edges);
+
+    setNodes(layoutElements.nodes);
+    setEdges(layoutElements.edges);
+
+  }, [edges, nodes]);
 
   return (
     <ReactFlowProvider>
