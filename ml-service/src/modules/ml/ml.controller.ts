@@ -1,5 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { PredictClassDto, TrainDataDto } from 'src/dto/ml';
 import { MlService } from './ml.service';
 
 @Controller()
@@ -17,7 +18,7 @@ export class MlController {
   }
 
   @MessagePattern({ cmd: 'predict' })
-  async predict() {
-    return this.mlService.getPredict();
+  async predict({ predictClass, features }: PredictClassDto) {
+    return this.mlService.getPredict(features, predictClass);
   }
 }

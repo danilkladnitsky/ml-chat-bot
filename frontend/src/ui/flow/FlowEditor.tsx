@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { ReactFlowProvider } from 'react-flow-renderer';
-import { Button, Loader } from '@mantine/core';
-import usePredict from 'api/hooks/telegram/use-predict';
+import { Loader } from '@mantine/core';
+import { useTelegramStore } from 'store/telegram.store';
+
+import { FlowNode } from 'domain/flow';
 
 import useTelegramMessages from '../../api/hooks/telegram/use-telegram-messages';
 import { useFlowStore } from '../../store/flow.store';
@@ -13,28 +15,31 @@ import styles from './styles.module.scss';
 
 const FlowEditor = () => {
   const { edges, nodes } = useFlowStore();
+  const { setSelectedMessage } = useTelegramStore();
 
   const { mutate: fetchTelegramMessages, isLoading } = useTelegramMessages();
-  const { mutate: requestPredictData } = usePredict();
+
+  const handleNodeSelect = (event: React.MouseEvent, data: FlowNode) => {
+    setSelectedMessage(data.data.originalMessage);
+  };
 
   useEffect(() => {
     fetchTelegramMessages();
   }, []);
 
-  const handleAnalysisSubmit = () => {
-    requestPredictData();
-  };
-
   return (
-    <div className={styles.editorWrapper}>
-      <div className={styles.editor}>
-        <ReactFlowProvider>
-          {isLoading ? <Loader /> : <FlowGui edges={edges} nodes={nodes} />}
-        </ReactFlowProvider>
-      </div>
-      <Button onClick={handleAnalysisSubmit} className={styles.analysisBtn}>
-        Анализировать
-      </Button>
+    <div className={styles.editor}>
+      <ReactFlowProvider>
+        {
+          isLoading
+            ? <Loader />
+            : <FlowGui
+              edges={edges}
+              nodes={nodes}
+              onNodeClick={handleNodeSelect}
+            />
+        }
+      </ReactFlowProvider>
     </div>
 
   );

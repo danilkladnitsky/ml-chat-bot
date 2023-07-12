@@ -8,3 +8,8 @@ export type TrainDataDto = {
   deepLevel: number;
   buttonsNumber: number;
 };
+
+export type PredictClassDto = {
+  predictClass: TrainDataDto;
+  features: string[];
+};

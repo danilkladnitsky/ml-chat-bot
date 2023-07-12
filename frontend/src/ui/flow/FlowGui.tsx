@@ -10,14 +10,14 @@ import { FlowEdge, FlowNode } from '../../domain/flow';
 import { createLayout } from './utils/createLayout';
 
 import 'reactflow/dist/style.css';
-import styles from './styles.module.scss';
 
 type Props = {
   nodes: FlowNode[];
   edges: FlowEdge[];
+  onNodeClick: (event: React.MouseEvent, node: FlowNode) => void;
 }
 
-const FlowGui = ({ edges, nodes }: Props) => {
+const FlowGui = ({ edges, nodes, onNodeClick }: Props) => {
   const layoutElements = createLayout(nodes, edges);
 
   const [flowNodes,, onNodesChange] = useNodesState(layoutElements.nodes);
@@ -30,6 +30,7 @@ const FlowGui = ({ edges, nodes }: Props) => {
         edges={flowEdges}
         onEdgesChange={onEdgesChange}
         onNodesChange={onNodesChange}
+        onNodeClick={onNodeClick}
         snapToGrid
         fitView
       >

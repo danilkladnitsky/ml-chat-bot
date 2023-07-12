@@ -72,14 +72,7 @@ export class PredictionService {
     });
   }
 
-  async train() {
-    const features = [
-      'deepLevel',
-      'messageLength',
-      'hasAttachments',
-      'buttonsNumber',
-    ];
-
+  async train(features: string[], classForPrediction: TrainDataDto) {
     await this.connectToDataWarehouse(this.warehouseUrl);
     const data = await this.getData();
 

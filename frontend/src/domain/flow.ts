@@ -5,6 +5,7 @@ export type FlowEdge = {
   source: Id;
   target: Id;
   label: string;
+  animated?: boolean;
   data: {
       originalMessage: TelegramMessage;
   };
@@ -52,6 +53,7 @@ export const createEdgesFromTelegramMessages =
           target: child.id.toString(),
           id: `${message.id}-${child.id}`,
           label: child.keyboard_link || child.text,
+          animated: true,
         }));
 
         edges.push(...edgesToChildren);
