@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Card, CloseButton, Group, Stack, Text } from '@mantine/core';
 import usePredict from 'api/hooks/ml/use-predict';
+import { useMlStore } from 'store/ml.store';
 import { useTelegramStore } from 'store/telegram.store';
 import { formatDate } from 'utils/formatDate';
 
@@ -8,6 +9,7 @@ import styles from './styles.module.scss';
 
 const Sidebar = () => {
   const { selectedMessage, setSelectedMessage, messages } = useTelegramStore();
+  const { predictionResult } = useMlStore();
 
   const { mutate: predictMessage, isLoading } = usePredict({
     messageId: selectedMessage?.id,
@@ -28,14 +30,21 @@ const Sidebar = () => {
   };
 
   const handlePredictionSubmit = () => {
-    predictMessage(selectedMessage.id);
+    predictMessage();
+
   };
 
   const closeSidebar = () => {
     setSelectedMessage(null);
   };
 
-  const { text, created_at, children } = selectedMessage;
+  const { text, created_at, children, id: currentMessageId } = selectedMessage;
+
+  const predict = predictionResult
+    .find(p => p.id === currentMessageId)?.result;
+
+  const predictScore = predictionResult ? '👌' : '👎';
+
   return (
     <Stack className={styles.sidebar}>
       <Group className={styles.sidebarHeader}>
@@ -52,7 +61,7 @@ const Sidebar = () => {
         <Group position="apart" mt="xs" mb="xs">
           <Text weight={500}>{text}</Text>
           <Text size={'lg'}>
-              👌
+            {predict ? predictScore : '❓'}
           </Text>
         </Group>
         <Text size="sm" color="dimmed">
