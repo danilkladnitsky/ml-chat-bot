@@ -80,7 +80,7 @@ export class PredictionService {
 
     if (data.length === 0) {
       return {
-        result: undefined,
+        result: null,
       };
     }
 
