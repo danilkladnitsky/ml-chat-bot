@@ -31,6 +31,7 @@ const FlowEditor = () => {
   }, []);
 
   const processesEdges = highlightEdgesByPredict(edges, predictionResult);
+
   return (
     <div className={styles.editor}>
       <ReactFlowProvider>

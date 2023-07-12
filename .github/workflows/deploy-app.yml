@@ -112,7 +112,7 @@ jobs:
           envkey_API_HOST: ${{ secrets.API_HOST }}
           envkey_ML_PORT: ${{ secrets.ML_PORT }}
           envkey_SOCKET_HOST: ${{ secrets.SOCKET_HOST }}
-          envkey_APP_VERSION: ${{ vars.GITHUB_RUN_NUMBER }}
+          envkey_APP_VERSION: 0.1.0
           file_name: .env
           fail_on_empty: false
 
